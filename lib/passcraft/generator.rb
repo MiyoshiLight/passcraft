@@ -1,36 +1,24 @@
 # frozen_string_literal: true
 
 require "securerandom"
+require "forwardable"
+require_relative "configuration"
 
 module Passcraft
   # Generator class responsible for building custom, secure passwords.
   class Generator
+    extend Forwardable
+
     UPPERCASE = ("A".."Z").to_a
     LOWERCASE = ("a".."z").to_a
     NUMBERS = ("0".."9").to_a
     DEFAULT_SYMBOLS = "!@\#$%^&*()-_=+[]{}|;:',.<>?/".chars
     SIMILAR_CHARS = %w[1 I l 0 O o].freeze
 
-    attr_reader :length, :uppercase, :lowercase, :numbers, :symbols, :exclude_similar, :custom_symbols
+    def_delegators :@config, :length, :uppercase, :lowercase, :numbers, :symbols, :exclude_similar, :custom_symbols
 
-    def initialize(
-      length: 16,
-      uppercase: true,
-      lowercase: true,
-      numbers: true,
-      symbols: true,
-      exclude_similar: false,
-      custom_symbols: nil
-    )
-      @length = length
-      @uppercase = uppercase
-      @lowercase = lowercase
-      @numbers = numbers
-      @symbols = symbols
-      @exclude_similar = exclude_similar
-      @custom_symbols = custom_symbols
-
-      validate_arguments!
+    def initialize(**options)
+      @config = Configuration.new(**options)
     end
 
     def generate
@@ -44,11 +32,6 @@ module Passcraft
     end
 
     private
-
-    def validate_arguments!
-      raise ArgumentError, "Length must be an integer" unless length.is_a?(Integer)
-      raise ArgumentError, "Length must be greater than 0" if length <= 0
-    end
 
     def select_guaranteed_characters(pools)
       guaranteed_chars = pools.map { |pool| sample(pool) }
