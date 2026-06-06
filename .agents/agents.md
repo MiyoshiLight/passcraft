@@ -78,7 +78,7 @@ When checking out code, developing, and committing, you must adhere to the follo
 AI agents must support the following custom slash commands in the conversation:
 - `/plan`: Trigger the planning process. When this command is received, the agent must immediately execute the planning workflow ([workflows/plan.md](../.agents/workflows/plan.md)) to research requirements and propose an implementation plan. No source code changes are allowed during this command.
 - `/review`: Trigger the code self-review process. The agent must execute the review workflow ([workflows/review.md](../.agents/workflows/review.md)) to audit the quality and safety of the changes before formatting and testing.
-- `/commit`: Trigger the safe commit process. The agent must immediately execute the commit workflow ([workflows/commit.md](../.agents/workflows/commit.md)) to review changes, branch check, update CHANGELOG, and perform a secure commit.
+- `/commit`: Trigger the safe commit and pull request process. The agent must immediately execute the commit workflow ([workflows/commit.md](../.agents/workflows/commit.md)) to review changes, branch check, update CHANGELOG, perform a secure commit, push to remote, and create a pull request (or provide the PR link).
 
 ## Rules & Guidelines
 To maintain code quality, security, and project consistency, you must follow the rules defined in the `.agents/rules/` directory:
@@ -90,13 +90,13 @@ To maintain code quality, security, and project consistency, you must follow the
 Special skill files are defined in the `.agents/skills/` directory to guide specific operations:
 - **Create a Plan**: [skills/plan.md](../.agents/skills/plan.md) - Explains how to research, design, and draft a clear implementation plan before changing any code.
 - **Self-Review**: [skills/review.md](../.agents/skills/review.md) - Guides the self-review of code quality and correctness.
-- **Git Commit**: [skills/commit.md](../.agents/skills/commit.md) - Explains how to stage files, draft commit messages, and commit safely after verification and approval.
+- **Git Commit & PR**: [skills/commit.md](../.agents/skills/commit.md) - Explains how to stage files, draft commit messages, commit safely, push, and create a pull request after verification and approval.
 
 ## Workflows (Procedural Instructions)
 Special workflow files are defined in the `.agents/workflows/` directory to guide specific operations:
 - **Create a Plan (Entrypoint)**: [workflows/plan.md](../.agents/workflows/plan.md) - Workflow file that triggers the planning skill.
 - **Run Review (Entrypoint)**: [workflows/review.md](../.agents/workflows/review.md) - Workflow file that triggers the self-review skill.
-- **Git Commit (Entrypoint)**: [workflows/commit.md](../.agents/workflows/commit.md) - Workflow file that triggers the commit skill.
+- **Git Commit & PR (Entrypoint)**: [workflows/commit.md](../.agents/workflows/commit.md) - Workflow file that triggers the commit and pull request skill.
 
 ## Directory Structure
 - `lib/`: Main source directory
