@@ -1,3 +1,7 @@
+---
+description: Commit files to repository
+---
+
 # Workflow: Safe and Compliant Commits and PRs
 
 This workflow triggers the safe commit and pull request process by reading and executing the commit skill.
