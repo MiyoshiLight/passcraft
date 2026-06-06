@@ -1,9 +1,9 @@
 # Skill: Safe and Compliant Commits
 
-This skill guides the agent on how to review changes, handle branches, write commit messages, and commit them safely to the Git repository.
+This skill guides the agent on how to review changes, handle branches, write commit messages, commit them safely, push to remote, and create a pull request.
 
 ## Goal
-Ensure commits are not made directly to `main` (or `master`), record changes in `CHANGELOG.md`, safely stage modified files, write clear commit messages, and execute `git commit` after user confirmation.
+Ensure commits are not made directly to `main` (or `master`), record changes in `CHANGELOG.md`, safely stage modified files, write clear commit messages, commit them, push to the remote repository, and initiate a pull request.
 
 ## Prerequisites
 Before initiating this skill, ensure that:
@@ -59,6 +59,37 @@ Before initiating this skill, ensure that:
    git commit -m "<commit message>"
    ```
 2. Inform the user that the commit was created successfully, providing the commit hash if possible.
+
+### Step 8: Push to Remote Repository
+1. Push the branch to the remote repository:
+   ```bash
+   git push -u origin <branch_name>
+   ```
+
+### Step 9: Create Pull Request
+Attempt to create a Pull Request using one of the following methods, depending on availability:
+
+1. **Method A: GitHub CLI (`gh`)**
+   If the `gh` command is installed and authenticated, run:
+   ```bash
+   gh pr create --title "<commit_message>" --body "Changes implemented for this task."
+   ```
+2. **Method B: GitHub API (cURL)**
+   If the environment variable `GITHUB_TOKEN` is present, fetch the remote repository information and run a POST request:
+   ```bash
+   curl -X POST \
+     -H "Authorization: token $GITHUB_TOKEN" \
+     -H "Accept: application/vnd.github.v3+json" \
+     https://api.github.com/repos/<owner>/<repo>/pulls \
+     -d '{"title":"<commit_message>","head":"<branch_name>","base":"main","body":"Changes implemented for this task."}'
+   ```
+3. **Method C: Web URL (Fallback)**
+   If automated creation fails or credentials are not configured, extract the owner/repo from the remote origin URL:
+   ```bash
+   git config --get remote.origin.url
+   ```
+   Generate the GitHub compare URL and present it to the user so they can open it in their browser to create the PR:
+   `https://github.com/<owner>/<repo>/compare/main...<branch_name>?expand=1`
 
 ## Guardrails
 - **Never** commit without documenting changes in `CHANGELOG.md`.

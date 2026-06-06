@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "passcraft/version"
-
 require_relative "passcraft/generator"
+require_relative "passcraft/strength_analyzer"
 
 # Passcraft is a secure and customizable password generator library.
 module Passcraft
@@ -12,5 +12,10 @@ module Passcraft
   # See Passcraft::Generator for details on available options.
   def self.generate(**options)
     Generator.new(**options).generate
+  end
+
+  # Analyzes a password's strength, returning score, rating, entropy, and feedback.
+  def self.strength(password)
+    StrengthAnalyzer.new(password).analyze
   end
 end
