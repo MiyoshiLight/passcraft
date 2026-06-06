@@ -48,14 +48,15 @@ The basic steps for developing in this project are as follows:
    ```
 
 ## Development Workflow
-Before making any changes to the codebase, you must follow this 7-step workflow:
+Before making any changes to the codebase, you must follow this 8-step workflow:
 1. **Create a Plan**: Follow [skills/plan.md](../.agents/skills/plan.md) to research the requirements and draft a clear implementation plan first. Do not make code changes yet.
 2. **Obtain User Approval**: Present the plan to the user and wait for their explicit approval before proceeding to implementation.
 3. **Implement**: Write the code as planned in a clean and maintainable way.
 4. **Review**: Follow [skills/review.md](../.agents/skills/review.md) to perform a self-review of your changes.
-5. **Run Linter**: Run RuboCop (`bundle exec rubocop`) to ensure the code style complies with project guidelines, and fix any styling issues.
-6. **Run Tests**: Execute RSpec (`bundle exec rspec`) to verify that all new and existing tests pass.
-7. **Commit Safely**: Follow [skills/commit.md](../.agents/skills/commit.md) to stage files, draft a descriptive commit message, and commit changes after obtaining user approval.
+5. **Run Linter**: Run RuboCop (`bundle exec rubocop`) to ensure the code style complies with project guidelines, and fix any styling issues. **If the linter fails, return to step 3 (Implement) to resolve the issues.**
+6. **Run Tests**: Execute RSpec (`bundle exec rspec`) to verify that all new and existing tests pass. **If any tests fail, return to step 3 (Implement) to resolve the failures.**
+7. **Obtain User Code Approval**: Present the final code changes (diff) to the user and wait for their explicit approval before proceeding to commit.
+8. **Commit & PR**: Follow [skills/commit.md](../.agents/skills/commit.md) to stage files, draft a descriptive commit message, commit changes, push to remote, and create a pull request after obtaining user approval.
 
 ## Git Workflow
 When checking out code, developing, and committing, you must adhere to the following branch and commit lifecycle:
@@ -68,7 +69,7 @@ When checking out code, developing, and committing, you must adhere to the follo
    ```bash
    git checkout -b feature/my-new-feature
    ```
-3. **Develop & Verify**: Apply the 7-step development workflow (Plan, Approval, Implement, Review, Linter, Test, Commit) on this branch.
+3. **Develop & Verify**: Apply the 8-step development workflow (Plan, Approval, Implement, Review, Linter, Test, Code Approval, Commit) on this branch.
 4. **Push & Report**: Push your branch to the remote repository and notify the user to create a pull request:
    ```bash
    git push -u origin feature/my-new-feature

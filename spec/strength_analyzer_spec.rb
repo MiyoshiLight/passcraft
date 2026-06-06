@@ -13,7 +13,7 @@ RSpec.describe Passcraft::StrengthAnalyzer do
 
     context "with weak passwords" do
       it "evaluates short and simple passwords as weak" do
-        weak_passwords = ["123", "abcde", "AAAAAA"]
+        weak_passwords = %w[123 abcde AAAAAA]
         weak_passwords.each do |pw|
           result = Passcraft.strength(pw)
           expect(result[:rating]).to eq(:weak)
