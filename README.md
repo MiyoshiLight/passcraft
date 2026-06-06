@@ -1,38 +1,98 @@
 # Passcraft
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/passcraft`. To experiment with that code, run `bin/console` for an interactive prompt.
+Passcraft is a secure, flexible, and easy-to-use password generator and analyzer library for Ruby. It utilizes cryptographically secure random number generation (`SecureRandom`) to build high-entropy passwords and helps you measure password strength by calculating scores, ratings, entropy, and providing improvement feedback.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem 'passcraft'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+And then execute:
 
-```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-```
+    $ bundle install
+
+Or install it yourself as:
+
+    $ gem install passcraft
 
 ## Usage
 
-TODO: Write usage instructions here
+### Password Generation
+
+You can generate passwords easily with the default configurations or customize the parameters.
+
+```ruby
+require 'passcraft'
+
+# 1. Generate a password with default settings (16 characters, all character pools enabled)
+password = Passcraft.generate
+# => "aB3$eF7*iJ0!mN3#"
+
+# 2. Customize length
+password = Passcraft.generate(length: 24)
+# => "p$9K#m2W!z_Q8&vR3*tB5^yN"
+
+# 3. Enable or disable specific character sets
+password = Passcraft.generate(
+  uppercase: true,
+  lowercase: true,
+  numbers: false,
+  symbols: false
+)
+# => "xHkLzQwPaSdFgHjK"
+
+# 4. Exclude visually similar characters (1, I, l, 0, O, o)
+password = Passcraft.generate(exclude_similar: true)
+
+# 5. Use a custom symbol set
+password = Passcraft.generate(
+  symbols: true,
+  custom_symbols: "@#$%"
+)
+# => "aB3$eF7@iJ%!mN3#"
+```
+
+### Password Strength Analysis
+
+You can evaluate any password using `Passcraft.strength`. It returns a hash with numerical score, verbal rating, informational entropy (in bits), and list of actionable hints.
+
+```ruby
+require 'passcraft'
+
+result = Passcraft.strength("Password123")
+# => {
+#      score: 3,
+#      rating: :strong,
+#      entropy: 71.93,
+#      feedback: ["Add symbols"]
+#    }
+
+result = Passcraft.strength("12345")
+# => {
+#      score: 0,
+#      rating: :weak,
+#      entropy: 16.61,
+#      feedback: [
+#        "Add lowercase letters",
+#        "Add uppercase letters",
+#        "Add symbols",
+#        "Make it longer (at least 12 characters)"
+#      ]
+#    }
+```
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/passcraft.
+Bug reports and pull requests are welcome on GitHub at https://github.com/MiyoshiLight/passcraft.
 
 ## License
 
